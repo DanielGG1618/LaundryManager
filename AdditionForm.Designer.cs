@@ -32,7 +32,10 @@
             this._additionButton = new System.Windows.Forms.Button();
             this._nameTextBox = new System.Windows.Forms.TextBox();
             this._openImageDialog = new System.Windows.Forms.OpenFileDialog();
+            this._cooldownNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this._cooldownLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._cooldownNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // _pictureBox
@@ -56,7 +59,7 @@
             this._additionButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this._additionButton.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._additionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this._additionButton.Location = new System.Drawing.Point(0, 466);
+            this._additionButton.Location = new System.Drawing.Point(0, 511);
             this._additionButton.Name = "_additionButton";
             this._additionButton.Size = new System.Drawing.Size(420, 90);
             this._additionButton.TabIndex = 3;
@@ -68,7 +71,7 @@
             this._nameTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this._nameTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._nameTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 17F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this._nameTextBox.Location = new System.Drawing.Point(0, 421);
+            this._nameTextBox.Location = new System.Drawing.Point(0, 466);
             this._nameTextBox.Name = "_nameTextBox";
             this._nameTextBox.Size = new System.Drawing.Size(420, 45);
             this._nameTextBox.TabIndex = 7;
@@ -81,20 +84,46 @@
             this._openImageDialog.FileName = "_openImageDialog";
             this._openImageDialog.Filter = "Image Files|*.BMP;*.JPG;*.GIF;*.JPEG;*.PNG";
             // 
+            // _cooldownNumericUpDown
+            // 
+            this._cooldownNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._cooldownNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.6F);
+            this._cooldownNumericUpDown.Location = new System.Drawing.Point(304, 419);
+            this._cooldownNumericUpDown.Name = "_cooldownNumericUpDown";
+            this._cooldownNumericUpDown.Size = new System.Drawing.Size(116, 45);
+            this._cooldownNumericUpDown.TabIndex = 8;
+            this._cooldownNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // _cooldownLabel
+            // 
+            this._cooldownLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._cooldownLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this._cooldownLabel.Location = new System.Drawing.Point(12, 418);
+            this._cooldownLabel.Name = "_cooldownLabel";
+            this._cooldownLabel.Size = new System.Drawing.Size(286, 45);
+            this._cooldownLabel.TabIndex = 9;
+            this._cooldownLabel.Text = "Washing Cooldown";
+            this._cooldownLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // AdditionForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(420, 556);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(168F, 168F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(420, 601);
+            this.Controls.Add(this._cooldownLabel);
+            this.Controls.Add(this._cooldownNumericUpDown);
             this.Controls.Add(this._nameTextBox);
             this.Controls.Add(this._additionButton);
             this.Controls.Add(this._pictureBox);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(444, 620);
+            this.MaximumSize = new System.Drawing.Size(444, 665);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(444, 620);
+            this.MinimumSize = new System.Drawing.Size(444, 665);
             this.Name = "AdditionForm";
             this.Text = "AdditionForm";
             ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._cooldownNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -106,5 +135,7 @@
         private System.Windows.Forms.Button _additionButton;
         private System.Windows.Forms.TextBox _nameTextBox;
         private System.Windows.Forms.OpenFileDialog _openImageDialog;
+        private System.Windows.Forms.NumericUpDown _cooldownNumericUpDown;
+        private System.Windows.Forms.Label _cooldownLabel;
     }
 }

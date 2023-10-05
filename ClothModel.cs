@@ -29,16 +29,16 @@ namespace LaundryManager
             CurrentCooldownState = currentCooldownState;
         }
 
-        public ClothModel(string name, Image image) 
+        public ClothModel(string name, Image image, int washingCooldown) 
         {
             Name = name;
             Image = image;
+            WashingCooldown = washingCooldown;
         }
 
         public void Init()
         {
             LastWashDate = DateTime.Today;
-            WashingCooldown = 0;
             CurrentCooldownState = 0;
         }
 

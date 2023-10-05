@@ -56,6 +56,7 @@ namespace LaundryManager
             clothModel.SetId(id);
 
             ClothView clothView = new ClothView(clothModel);
+            _clothsViews.Add(id, clothView);
             _flowLayoutPanel.Controls.Add(clothView);
         }
 

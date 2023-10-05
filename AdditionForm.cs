@@ -22,7 +22,8 @@ namespace LaundryManager
         {
             string name = _nameTextBox.Text;
             Image image = _pictureBox.BackgroundImage;
-            ClothModel cloth = new ClothModel(name, image);
+            int washingCooldown = (int)_cooldownNumericUpDown.Value;
+            ClothModel cloth = new ClothModel(name, image, washingCooldown);
 
             return cloth;
         }
