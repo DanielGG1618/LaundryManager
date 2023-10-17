@@ -13,7 +13,7 @@ namespace LaundryManager
 {
     public static class SQL
     {
-        const int CLOTH_PARSING_STEP = 7;
+        private const int CLOTH_PARSING_STEP = 7;
 
         private static SqlConnection _connection;
 
@@ -176,6 +176,24 @@ namespace LaundryManager
             command.Dispose();
 
             return id;
+        }
+
+        public static void UpdateClothCooldownState(int id, int cooldownState)
+        {
+            string commandText = $"UPDATE Cloths SET CurrentCooldownState = {cooldownState} WHERE Id = {id}";
+            EnqueueCommand(commandText);
+        }
+
+        public static void UpdateLastWashDate(int id, DateTime date)
+        {
+            string commandText = $"UPDATE Cloths SET LastWashDate = {date.ToSQLstring()} WHERE Id = {id}";
+            EnqueueCommand(commandText);
+        }
+
+        public static void UpdateLastWearDate(int id, DateTime date)
+        {
+            string commandText = $"UPDATE Cloths SET LastWearDate = {date.ToSQLstring()} WHERE Id = {id}";
+            EnqueueCommand(commandText);
         }
 
         public static void DeleteClothId(int id)

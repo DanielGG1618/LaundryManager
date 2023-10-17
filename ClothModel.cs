@@ -8,12 +8,45 @@ namespace LaundryManager
         private int _id = -1;
         public string Name { get; private set; }
         public Image Image { get; private set; }
-        public DateTime LastWashDate { get; private set; }
-        public DateTime LastWearDate { get; private set; }
+
+        private DateTime _lastWashDate;
+        public DateTime LastWashDate 
+        {
+            get => _lastWashDate;
+            private set
+            {
+                _lastWashDate = value;
+                SQL.UpdateLastWashDate(_id, _lastWashDate);
+            }
+        }
+        
+        private DateTime _lastWearDate;
+        public DateTime LastWearDate
+        {
+            get => _lastWearDate;
+            private set
+            {
+                _lastWearDate = value;
+                SQL.UpdateLastWearDate(_id, _lastWearDate);
+            }
+        }
         public int WashingCooldown { get; private set; }
-        public int CurrentCooldownState { get; private set; }
-        public bool WornToday => LastWearDate >= DateTime.Today;
-        public bool WashedToday => LastWashDate >= DateTime.Today;  
+
+        private int _currentCooldownState;
+        public int CurrentCooldownState 
+        {
+            get
+            {
+                return _currentCooldownState;
+            }
+            set
+            {
+                _currentCooldownState = value;
+                SQL.UpdateClothCooldownState(_id, _currentCooldownState);
+            }
+        }
+        public bool WornToday => _lastWearDate >= DateTime.Today;
+        public bool WashedToday => _lastWashDate >= DateTime.Today;  
 
         public event Action<int> Deleted;
 
@@ -52,6 +85,7 @@ namespace LaundryManager
 
         public void OnWear()
         {
+            LastWearDate = DateTime.Today;
             CurrentCooldownState += 1;
         }
 
