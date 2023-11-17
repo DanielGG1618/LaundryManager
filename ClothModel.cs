@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 
 namespace LaundryManager
 {
@@ -67,6 +68,19 @@ namespace LaundryManager
             Name = name;
             Image = image;
             WashingCooldown = washingCooldown;
+        }
+
+        public ClothModel(Cloth cloth)
+        {
+            _id = cloth.Id;
+            Name = cloth.Name;
+            byte[] data = cloth.Image.ToArray();
+            MemoryStream ms = new MemoryStream(data);
+            Image = Image.FromStream(ms);
+            LastWashDate = cloth.LastWashDate;
+            LastWearDate = cloth.LastWearDate;
+            WashingCooldown = cloth.WashingCooldown.Value;
+            CurrentCooldownState = cloth.CurrentCooldownState;
         }
 
         public void Init()

@@ -13,9 +13,9 @@ namespace LaundryManager
 {
     public static class SQL
     {
-        private const int CLOTH_PARSING_STEP = 7;
-
         private static SqlConnection _connection;
+
+        private static LaundryDataContext _laundryDataContext;
 
         private static Queue<string> _commandsQueue = new Queue<string>();
 
@@ -23,6 +23,8 @@ namespace LaundryManager
         {
             _connection = new SqlConnection(Settings.Default.LaundryConnectionString);
             _connection.Open();
+
+            _laundryDataContext = new LaundryDataContext();
 
             DequeueCommands();
         }
@@ -93,12 +95,11 @@ namespace LaundryManager
         {
             Dictionary<int, ClothModel> cloths = new Dictionary<int, ClothModel>();
 
-            List<object> selected = Select($"SELECT Id, Name, Image, LastWashDate, LastWearDate, " +
-                $"WashingCooldown, CurrentCooldownState FROM Cloths");
-            
-            for (int i = 0; i < selected.Count; i += CLOTH_PARSING_STEP)
+            Cloth[] selected = _laundryDataContext.Cloths.ToArray();
+
+            foreach (var cloth in selected)
             {
-                ClothModel clothModel = ParseCloth(selected.Skip(i).Take(CLOTH_PARSING_STEP).ToList(), out int id);
+                ClothModel clothModel = ParseCloth(cloth, out int id);
                 cloths.Add(id, clothModel);
             }
 
@@ -107,10 +108,9 @@ namespace LaundryManager
 
         public static ClothModel GetClothFromId(int id)
         {
-            List<object> selected = Select($"SELECT Id, Name, Image, LastWashDate, LastWearDate, " +
-                $"WashingCooldown, CurrentCooldownState FROM Cloths WHERE Id = {id}");
+            Cloth cloth = _laundryDataContext.Cloths.Where((Cloth c) => c.Id == id).First();
 
-            return ParseCloth(selected, out _);
+            return new ClothModel(cloth);
         }
 
         private static ClothModel ParseCloth(List<object> input, out int id)
@@ -143,6 +143,15 @@ namespace LaundryManager
             return cloth;
         }
 
+        private static ClothModel ParseCloth(Cloth cloth, out int id)
+        {
+            id = cloth.Id;
+
+            ClothModel clothModel = new ClothModel(cloth);
+
+            return clothModel;
+        }
+
         public static int InsertCloth(ClothModel cloth)
         {
             int id;
@@ -163,7 +172,7 @@ namespace LaundryManager
 
             string commandText = $"INSERT INTO Cloths (Name, Image, LastWashDate, WashingCooldown) " +
                 $"OUTPUT Inserted.Id " +
-                $"VALUES (@Name, @Image, @LastWashDate, @WashingCooldown)";
+                $"VALUES (@Name, @Image, @LastWashDate, @WashingCooldown)";          
 
             SqlCommand command = new SqlCommand(commandText, _connection);
             command.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = name;
@@ -180,19 +189,19 @@ namespace LaundryManager
 
         public static void UpdateClothCooldownState(int id, int cooldownState)
         {
-            string commandText = $"UPDATE Cloths SET CurrentCooldownState = {cooldownState} WHERE Id = {id}";
+            string commandText = $"UPDATE Cloths SET CurrentCooldownState = '{cooldownState}' WHERE Id = '{id}'";
             EnqueueCommand(commandText);
         }
 
         public static void UpdateLastWashDate(int id, DateTime date)
         {
-            string commandText = $"UPDATE Cloths SET LastWashDate = {date.ToSQLstring()} WHERE Id = {id}";
+            string commandText = $"UPDATE Cloths SET LastWashDate = '{date.ToSQLstring()}' WHERE Id = '{id}'";
             EnqueueCommand(commandText);
         }
 
         public static void UpdateLastWearDate(int id, DateTime date)
         {
-            string commandText = $"UPDATE Cloths SET LastWearDate = {date.ToSQLstring()} WHERE Id = {id}";
+            string commandText = $"UPDATE Cloths SET LastWearDate = '{date.ToSQLstring()}' WHERE Id = '{id}'";
             EnqueueCommand(commandText);
         }
 
